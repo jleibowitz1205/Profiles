@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profiles — Convergence Auto</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="src/styles.css?v=3" />
+  <style>
+    /* Inlined critical styles — guarantee these survive any caching layer. */
+    .drawer.open { right: 0 !important; }
+  </style>
+
+  <!-- CSV parsing — PapaParse via CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+</head>
+<body>
+  <div class="app">
+
+    <!-- ── Top bar ──────────────────────────────────────────────────── -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark">P</div>
+        Profiles
+        <span class="brand-tag">demo · Convergence Auto</span>
+      </div>
+      <nav class="nav" id="nav"></nav>
+      <div class="actions">
+        <input type="file" id="file-input-sales" multiple accept=".csv" style="display:none" />
+        <button class="btn btn-sm" id="btn-load-sample-top">Load sample data</button>
+        <button class="btn btn-sm" id="btn-upload-top">↑ Upload CSV</button>
+        <button class="btn btn-ghost btn-sm" id="btn-reset" title="Reset and clear loaded data">Reset</button>
+      </div>
+    </header>
+
+    <main class="main">
+
+      <!-- Empty state — shown until data is loaded -->
+      <div id="empty-state" class="empty-state hidden">
+        <h2>Refine your customer data</h2>
+        <p>Profiles ingests sales and service exports, applies the VIN-spine engine, and produces clean, texting-ready customer-vehicle records.</p>
+        <div class="actions">
+          <button class="btn btn-primary" id="btn-load-sample">Load sample data</button>
+          <button class="btn" id="btn-upload">↑ Upload your own CSVs</button>
+        </div>
+        <p class="muted" style="margin-top:28px;font-size:11.5px">Need two files: a <strong>sales</strong> export (with <code>Vin</code>, <code>Purchase Date</code>, <code>Full Name</code>) and a <strong>service</strong> export (with <code>Vin</code>, <code>Dt Close Converted</code>). All processing happens in your browser — nothing is uploaded.</p>
+      </div>
+
+      <!-- Stats strip (rendered after data loads) -->
+      <div id="stats-host" class="hidden"></div>
+
+      <!-- Views (one shown at a time) -->
+      <div id="view-currentlyOwned" class="hidden"></div>
+      <div id="view-salesHistory"   class="hidden"></div>
+      <div id="view-anomalies"      class="hidden"></div>
+      <div id="view-settings"       class="hidden"></div>
+    </main>
+
+    <!-- Detail drawer (slides over) -->
+    <div id="scrim" class="scrim hidden"></div>
+    <aside id="drawer" class="drawer"></aside>
+
+    <!-- Export modal -->
+    <div id="export-modal" class="modal hidden">
+      <div class="modal-content"></div>
+    </div>
+
+    <!-- Toasts -->
+    <div id="toasts" class="toasts"></div>
+
+  </div>
+
+  <!-- ── Engine modules — loaded VERBATIM from Apps Script v2 source ── -->
+  <script src="src/engine/normalizers.js"></script>
+  <script src="src/engine/unionFind.js"></script>
+  <script src="src/engine/internalDetection.js"></script>
+  <script src="src/engine/buckets.js"></script>
+  <script src="src/engine/eventStream.js"></script>
+  <script src="src/engine/segments.js"></script>
+  <script src="src/engine/buildLoyaltyTimeline.js"></script>
+  <script src="src/engine/targets.js"></script>
+  <script src="src/engine/anomalies.js"></script>
+  <script src="src/engine/runEngine.js"></script>
+
+  <!-- ── Data & schema ─────────────────────────────────────────────── -->
+  <script src="src/data/csvSchema.js"></script>
+  <script src="src/data/sample.js"></script>
+
+  <!-- ── UI ────────────────────────────────────────────────────────── -->
+  <script src="src/ui/notify.js"></script>
+  <script src="src/ui/stats.js"></script>
+  <script src="src/ui/filters.js"></script>
+  <script src="src/ui/currentlyOwned.js"></script>
+  <script src="src/ui/salesHistory.js"></script>
+  <script src="src/ui/anomalies.js"></script>
+  <script src="src/ui/detail.js"></script>
+  <script src="src/ui/export.js"></script>
+  <script src="src/ui/settings.js"></script>
+  <script src="src/ui/uploader.js"></script>
+  <script src="src/ui/app.js"></script>
+</body>
+</html>
